@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,6 +29,7 @@ namespace MatrixMultParallel
             if (b is null)
                 throw new ArgumentNullException(nameof(b));
 
+            // лучше использовать множественное число и слово count, тогда из названия будет понятно, что это количество
             int rowA = a.GetLength(0);
             int columnA = a.GetLength(1);
             int rowB = b.GetLength(0);
@@ -41,13 +42,17 @@ namespace MatrixMultParallel
             var result = new int[rowA, columnB];
 
             var tasks = new List<Task>();
+            // распараллеливание получилось по одной размерности, а получится добавить ещё и по второй?
+            // в умножении каждое скалярное произведение не зависит от резальтатов других, поэтосму это возможно
             for (int i = 0; i < columnA; i++)
             {
+                // поскольку это значене будт передаваться в функцию, можно дать ему понятное название
                 int j = i;
+                // Чтобы сразу запустить задачу можно использовать Task.Factory.StartNew()
                 tasks.Add(new Task(() => MultTask(result, a, b, j)));
                 tasks.Last().Start();
             }
-            
+            // размер нам сразу известен, так что можно создавать массив и его заполнять тасками
             Task.WaitAll(tasks.ToArray());
 
             return result;
@@ -55,6 +60,9 @@ namespace MatrixMultParallel
 
         private static void MultTask(int[,] result, int[,] a, int[,] b, int m)
         {
+            // здесь всё верно, но не зная, что должно происходить, сложно разобраться,
+            // потому что много однобуквенных переменных и получения длинн по индексу
+            // если часть из них переименовать, будет проще читать
             for (int n = 0; n < a.GetLength(0); n++)
             {
                 for (int k = 0; k < b.GetLength(1); k++)
