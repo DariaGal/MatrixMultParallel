@@ -11,29 +11,15 @@ namespace MatrixMultParallel
         static void Main(string[] args)
         {
 
-            var m1 = MatrixOperation.GenerateRandMatrix(2, 3);
-            var m2 = MatrixOperation.GenerateRandMatrix(3, 4);
-            Console.WriteLine("matrix1: ");
-            PrintMatrix(m1);
-            Console.WriteLine("matrix2: ");
-            PrintMatrix(m2);
+            var matrix1 = new Matrix(2, 3, MatrixTypes.RandomMatrix);
+            var matrix2 = new Matrix(3, 4, MatrixTypes.RandomMatrix);
 
-            var result = MatrixOperation.Multiply(m1, m2);
+            var matrixNew = matrix1 * matrix2;
+            Console.WriteLine("matrix1: {0}", matrix1.ToString());
 
-            Console.WriteLine("result: ");
-            PrintMatrix(result);
-        }
+            Console.WriteLine("matrix2: {0}", matrix2.ToString());
 
-        static void PrintMatrix(int[,] a)
-        {
-            for (int i = 0; i < a.GetLength(0); i++)
-            {
-                for (int j = 0; j < a.GetLength(1); j++)
-                {
-                    Console.Write("{0} ", a[i, j]);
-                }
-                Console.WriteLine();
-            }
+            Console.WriteLine("result: {0}", matrixNew.ToString());
         }
     }
 }
